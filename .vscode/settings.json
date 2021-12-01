@@ -1,0 +1,17 @@
+{
+    "files.exclude": {
+        "**/*.js": { "when": "$(basename).ts" },
+        "**/*.css": { "when": "$(basename).scss" },
+        "**/*.map": { "when": "$(basename).map" },
+        "node_modules/": true,
+        ".vscode/": true,
+        "dist/": true
+    },
+    "search.exclude": {
+        "**/.vscode": true,
+        "**/*.git": true,
+        "**/*.js": true,
+        "**/*.node_modules": true,
+        "**/*.git": true
+    }
+}
