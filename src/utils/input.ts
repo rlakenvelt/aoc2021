@@ -2,12 +2,12 @@ import * as fs from 'fs';
 
 export default class InputHelper {
 
-  getInput (separator = "\n", name="input") {
+  getInput (name="input", separator = "\n", ) {
     const file = fs.readFileSync(`./${name}.txt`, "utf-8");
     return file.split(separator).map(x =>x);
   };
   
-  getNumericInput (separator = "\n") {
-    return this.getInput(separator).map(x => parseInt(x));
+  getNumericInput (name="input", separator = "\n") {
+    return this.getInput(name, separator).map(x => parseInt(x));
   }; 
 }
