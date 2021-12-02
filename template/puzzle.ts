@@ -4,7 +4,8 @@ import Logger from '../utils/logger';
 const puzzle = 'Day %puzzle%'
 const input = new InputHelper();
 const logger = new Logger(puzzle);
-const report = input.getNumericInput();
+
+const values = input.getNumericInput();
 
 logger.start();
 let answer = 0;
