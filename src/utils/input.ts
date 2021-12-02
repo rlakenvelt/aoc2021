@@ -2,7 +2,13 @@ import * as fs from 'fs';
 
 export default class InputHelper {
 
-  getInput (separator = "\n", name="input") {
+  testmode = false;
+
+  constructor (testmode=false) {
+    this.testmode = testmode;
+  }    
+
+  getInput (separator = "\n", name=(this.testmode ? "test" : "input")) {
     const file = fs.readFileSync(`./${name}.txt`, "utf-8");
     return file.split(separator).map(x =>x);
   };
