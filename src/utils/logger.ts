@@ -1,13 +1,15 @@
+import Common from './common';
+
 export default class Logger {
 
     starttime: Date;
     puzzletitle: string;
     testmode = false;
-
-    constructor (title: string, testmode=false) {
+    
+    constructor (title: string) {
         this.puzzletitle = title;
         this.starttime = new Date();
-        this.testmode = testmode;
+        this.testmode = Common.testMode();
     }  
 
     start() {
@@ -17,10 +19,11 @@ export default class Logger {
     end (answer: any) {
         const endtime = new Date();
         console.log("---------------------");
-        if (this.testmode)
-            console.log("TEST");
         console.log("Puzzle   :", this.puzzletitle);
-        console.log("Answer   :", answer);
+        if (this.testmode)
+            console.log("Answer   :", answer, Common.highlight('TESTMODE'));
+        else    
+            console.log("Answer   :", answer);
         console.log("Duration :", endtime.getTime() - this.starttime.getTime(), "ms");
         console.log("---------------------");
     };

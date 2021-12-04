@@ -3,9 +3,8 @@ import Logger from '../utils/logger';
 import Board from './board';
 
 const puzzle = 'Day 04A: Giant Squid'
-const testmode = false;
-const input = new InputHelper(testmode);
-const logger = new Logger(puzzle, testmode);
+const input = new InputHelper();
+const logger = new Logger(puzzle);
 
 const puzzleinputparts: string[] = input.getInput('\n\n');
 
@@ -18,12 +17,12 @@ for (let i=1; i < puzzleinputparts.length; i++) {
 }
 
 let answer = 0;
-
 for (let d=0; d<numbers.length && answer===0; d++) {
     for (let b=0; b<boards.length; b++) {
         boards[b].draw(numbers[d]);
         if (boards[b].score>0) {
             answer = boards[b].score*numbers[d];
+            boards[b].display();
             break;
         }
     }

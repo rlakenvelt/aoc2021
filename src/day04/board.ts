@@ -1,3 +1,4 @@
+import Common from '../utils/common';
 
 class BoardNumber {
     number: number;
@@ -10,7 +11,7 @@ class BoardNumber {
 }
 
 export default class Board {
-    board: BoardNumber[][];
+    private board: BoardNumber[][];
     score: number = 0;
 
     constructor(numbers: string) {
@@ -38,7 +39,7 @@ export default class Board {
         for (let i = 0; i < this.board.length; i++) {
             console.log(this.board[i].map(x => {
                                         if (x.drawn) {
-                                            return "\x1b[1m\x1b[31m" + x.number.toString().padStart(2) + "\x1b[0m";
+                                            return Common.highlight(x.number.toString().padStart(2));
                                         } else {
                                             return x.number.toString().padStart(2);
                                         }

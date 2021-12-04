@@ -3,9 +3,8 @@ import Logger from '../utils/logger';
 import Board from './board';
 
 const puzzle = 'Day 04B: Giant Squid'
-const testmode = false;
-const input = new InputHelper(testmode);
-const logger = new Logger(puzzle, testmode);
+const input = new InputHelper();
+const logger = new Logger(puzzle);
 
 const puzzleinputparts: string[] = input.getInput('\n\n');
 

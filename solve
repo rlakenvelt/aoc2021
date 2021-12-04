@@ -8,6 +8,6 @@ do
     FILENAME=`basename $file`
     DIRNAME=`dirname $file`
     cd $DIRNAME
-    ts-node $FILENAME
+    ts-node $FILENAME $2 $3 $4 $5
     cd - > /dev/null
 done

@@ -1,11 +1,12 @@
 import * as fs from 'fs';
+import Common from './common';
 
 export default class InputHelper {
 
   testmode = false;
 
-  constructor (testmode=false) {
-    this.testmode = testmode;
+  constructor () {
+    this.testmode = Common.testMode();
   }    
 
   getInput (separator = "\n", name=(this.testmode ? "test" : "input")) {
