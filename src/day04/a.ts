@@ -22,7 +22,6 @@ for (let d=0; d<numbers.length && answer===0; d++) {
         boards[b].draw(numbers[d]);
         if (boards[b].score>0) {
             answer = boards[b].score*numbers[d];
-            boards[b].display();
             break;
         }
     }
