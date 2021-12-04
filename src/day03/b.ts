@@ -1,7 +1,7 @@
 import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
 
-const puzzle = 'Day 03B'
+const puzzle = 'Day 03B: Binary Diagnostic'
 const testmode = false;
 const input = new InputHelper(testmode);
 const logger = new Logger(puzzle, testmode);
