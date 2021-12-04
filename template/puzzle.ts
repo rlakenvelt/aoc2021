@@ -2,9 +2,8 @@ import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
 
 const puzzle = 'Day %puzzle%'
-const testmode = false;
-const input = new InputHelper(testmode);
-const logger = new Logger(puzzle, testmode);
+const input = new InputHelper();
+const logger = new Logger(puzzle);
 
 const values = input.getNumericInput();
 
