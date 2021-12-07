@@ -6,9 +6,9 @@ const input = new InputHelper();
 const logger = new Logger(puzzle);
 
 const days = 256;
-const fishes = input.getNumericInput(',');
 
 logger.start();
+const fishes = input.getNumericInput(',');
 
 const counters = fishes.reduce((list, fish) => {
                             list[fish]++;
@@ -16,8 +16,7 @@ const counters = fishes.reduce((list, fish) => {
                         }, new Array(9).fill(0))
 
 for (let i = 0; i< days; i++) {
-    const newFishes = counters[0];
-    counters.shift()
+    const newFishes = counters.shift()
     counters[6]+=newFishes;
     counters.push(newFishes);
 }
