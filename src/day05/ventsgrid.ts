@@ -1,4 +1,4 @@
-import {Grid, Vector, Point} from '../utils/grid';
+import {Grid} from '../utils/grid';
 
 export class VentsGrid extends Grid
 {

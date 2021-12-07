@@ -1,6 +1,6 @@
 import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
-import {Grid, Vector, Point} from '../utils/grid';
+import {Grid, Line, Point} from '../utils/grid';
 import {VentsGrid} from './ventsgrid';
 
 const puzzle = 'Day 05B: Hydrothermal Venture'
@@ -9,12 +9,12 @@ const logger = new Logger(puzzle);
 
 logger.start();
 
-let lines: Vector []   = input.getInput()
-                            .reduce((list: Vector[], line) => {
+let lines: Line []   = input.getInput()
+                            .reduce((list: Line[], line) => {
                                 const parts = line.split(' -> ');
                                 const start = new Point(parseInt(parts[0].split(',')[0]), parseInt(parts[0].split(',')[1]));
                                 const end = new Point(parseInt(parts[1].split(',')[0]), parseInt(parts[1].split(',')[1]));
-                                const newline = new Vector(start, end);
+                                const newline = new Line(start, end);
                                 list.push(newline);
                                 return list;
                             }, []);
@@ -28,7 +28,7 @@ const width = lines.reduce((w, p) => {
                     }, 0);
 
 const grid = new VentsGrid(height+1, width+1);
-grid.markVectors(lines);
+grid.markLines(lines);
 // grid.display();
 logger.end(grid.countOverlapping());
 
