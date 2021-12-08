@@ -7,8 +7,8 @@ const logger = new Logger(puzzle);
 
 const inputValues:string[] = input.getInput();
 const inputParts = inputValues.map(x=> x.split(' | '));
-const patterns = inputParts.map(x=>x[0].split(' ')).map(p=>sortParts(p));
-const outputValues = inputParts.map(x=>x[1].split(' ')).map(p=>sortParts(p));
+const patterns = getInputparts(0);
+const outputValues = getInputparts(1);
 
 logger.start();
 let answer = 0;
@@ -27,55 +27,21 @@ patterns.forEach((pattern, index) => {
 logger.end(answer);
 
 function determineDigitsForPattern(patterns: string[]) {
-    const solution: string[] = new Array(10).fill('');
+    const solution: any[] = new Array(10).fill('A');
     // 1 4 7 8
-    for (let i=0; i<patterns.length; i++) {
-        switch (patterns[i].length) {
-            case 2:
-                solution[1] = patterns[i];
-                break;
-            case 3:
-                solution[7] = patterns[i]
-                break;
-            case 4:
-                solution[4] = patterns[i];
-                break;
-            case 7:
-                solution[8] = patterns[i]
-                break;
-        }
-    }
+    solution[1]=patterns.find(x=>x.length===2);
+    solution[4]=patterns.find(x=>x.length===4);
+    solution[7]=patterns.find(x=>x.length===3);
+    solution[8]=patterns.find(x=>x.length===7);
     // 3 6
-    for (let i=0; i<patterns.length; i++) {
-        switch (patterns[i].length) {
-            case 5:
-                if (matches(patterns[i], solution[1]))
-                   solution[3] = patterns[i];
-                break;
-            case 6:
-                if (!matches(patterns[i], solution[1]))
-                    solution[6] = patterns[i];
-                break;
-        }
-    }
+    solution[3] = patterns.find(x=>{return x.length===5 && matches(x, solution[1])});
+    solution[6] = patterns.find(x=>{return x.length===6 && !matches(x, solution[1])});
     // 0 9
-    const six = patterns.filter(p=>{return p.length===6&&p!==solution[6]});
-    if (diff([six[0], solution[3]]).length===2) {
-        solution[0] = six[1];
-        solution[9] = six[0];
-    } else {
-        solution[0] = six[0];
-        solution[9] = six[1];
-    }
+    solution[0]=patterns.find(x=>{return x.length===6&&x!==solution[6]&&diff([x, solution[3]]).length!==2})
+    solution[9]=patterns.find(x=>{return x.length===6&&x!==solution[6]&&diff([x, solution[3]]).length===2})
     // 2 5
-    const five = patterns.filter(p=>{return p.length===5&&p!==solution[3]});
-    if (diff([five[0], solution[9]]).length===3) {
-        solution[2] = five[0];
-        solution[5] = five[1];
-    } else {
-        solution[2] = five[1];
-        solution[5] = five[0];
-    }
+    solution[2]=patterns.find(x=>{return x.length===5&&x!==solution[3]&&diff([x, solution[9]]).length===3})
+    solution[5]=patterns.find(x=>{return x.length===5&&x!==solution[3]&&diff([x, solution[9]]).length!==3})
 
     return solution;
 }
@@ -112,4 +78,8 @@ function diff(patterns: string[]) {
         if (count!==patterns.length) diff.push(letter);
     })
     return diff;
+}
+
+function getInputparts(part: number) {
+    return inputParts.map(x=>x[part].split(' ')).map(p=>sortParts(p));
 }
