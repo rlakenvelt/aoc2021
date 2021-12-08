@@ -5,12 +5,13 @@ const puzzle = 'Day 08B: Seven Segment Search'
 const input = new InputHelper();
 const logger = new Logger(puzzle);
 
+logger.start();
+
 const inputValues:string[] = input.getInput();
 const inputParts = inputValues.map(x=> x.split(' | '));
 const patterns = getInputparts(0);
 const outputValues = getInputparts(1);
 
-logger.start();
 let answer = 0;
 
 patterns.forEach((pattern, index) => {
@@ -27,7 +28,7 @@ patterns.forEach((pattern, index) => {
 logger.end(answer);
 
 function determineDigitsForPattern(patterns: string[]) {
-    const solution: any[] = new Array(10).fill('A');
+    const solution: any[] = new Array(10).fill('');
     // 1 4 7 8
     solution[1]=patterns.find(x=>x.length===2);
     solution[4]=patterns.find(x=>x.length===4);
@@ -37,11 +38,11 @@ function determineDigitsForPattern(patterns: string[]) {
     solution[3] = patterns.find(x=>{return x.length===5 && matches(x, solution[1])});
     solution[6] = patterns.find(x=>{return x.length===6 && !matches(x, solution[1])});
     // 0 9
-    solution[0]=patterns.find(x=>{return x.length===6&&x!==solution[6]&&diff([x, solution[3]]).length!==2})
-    solution[9]=patterns.find(x=>{return x.length===6&&x!==solution[6]&&diff([x, solution[3]]).length===2})
+    solution[0]=patterns.find(x=>{return x.length===6 && x!==solution[6] && diff([x, solution[3]])!==2})
+    solution[9]=patterns.find(x=>{return x.length===6 && x!==solution[6] && diff([x, solution[3]])===2})
     // 2 5
-    solution[2]=patterns.find(x=>{return x.length===5&&x!==solution[3]&&diff([x, solution[9]]).length===3})
-    solution[5]=patterns.find(x=>{return x.length===5&&x!==solution[3]&&diff([x, solution[9]]).length!==3})
+    solution[2]=patterns.find(x=>{return x.length===5 && x!==solution[3] && diff([x, solution[9]])===3})
+    solution[5]=patterns.find(x=>{return x.length===5 && x!==solution[3] && diff([x, solution[9]])!==3})
 
     return solution;
 }
@@ -77,7 +78,7 @@ function diff(patterns: string[]) {
         })
         if (count!==patterns.length) diff.push(letter);
     })
-    return diff;
+    return diff.length;
 }
 
 function getInputparts(part: number) {
