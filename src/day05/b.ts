@@ -1,6 +1,6 @@
 import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
-import {Grid, Line, Point} from '../utils/grid';
+import {Line, Point} from '../utils/grid';
 import {VentsGrid} from './ventsgrid';
 
 const puzzle = 'Day 05B: Hydrothermal Venture'
