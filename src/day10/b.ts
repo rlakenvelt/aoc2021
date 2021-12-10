@@ -1,50 +1,36 @@
 import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
+import Compiler from './compiler';
 
 const puzzle = 'Day 10B: Syntax Scoring'
 const input = new InputHelper();
 const logger = new Logger(puzzle);
 
-const pairs: any = [
-    {open: '(', close: ')', points: 1},
-    {open: '[', close: ']', points: 2},
-    {open: '{', close: '}', points: 3},
-    {open: '<', close: '>', points: 4}
+const brackets: any = [
+    {bracket: '(', points: 1},
+    {bracket: '[', points: 2},
+    {bracket: '{', points: 3},
+    {bracket: '<', points: 4}
 ]
 
 logger.start();
 
 let answer = 0;
-let lines:string[][] = input.getInput().map(x=>x.split(''));
-let allopenstacks: string[][] = [];
+let programs:string[][] = input.getInput().map(x=>x.split(''));
+let scores: number[] = [];
 
-lines.forEach(l=> {
-    let illegal = false;
-    let openstack: string[] = [l[0]];
-    for (let i = 1; i< l.length; i++) {
-        const pair = pairs.find((p: any)=>p.close===l[i]);
-        if (pair) {
-            if (openstack[0] !== pair.open) {
-              illegal = true;
-              break;
-            }
-            openstack.shift();
-        } else {
-            openstack.unshift(l[i]);
-        }
-    }
-    if (!illegal) {
-        allopenstacks.push(openstack);
+programs.forEach(program=> {
+    let score = 0;
+    const compiler = new Compiler(program.join(''));
+    compiler.compile();
+    if (compiler.errorNumber===2) {
+        compiler.errorText.split('').forEach(c=> {
+            const bracket: any = brackets.find((b: any)=>b.bracket === c);
+            score=score*5+bracket.points;
+        });
+        scores.push(score);
     }
     
-})
-let scores: number[] = [];
-allopenstacks.forEach(line=> {
-    let linetotal = line.reduce((total, c) => {
-        const char:any = pairs.find((x: any)=> x.open===c);
-        return total*5+char.points;
-    }, 0);
-    scores.push(linetotal);
 })
 scores=scores.sort((a, b)=> a-b);
 answer=scores[Math.trunc(scores.length/2)];
