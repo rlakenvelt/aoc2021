@@ -6,16 +6,8 @@ const puzzle = 'Day 11B: Dumbo Octopus'
 const input = new InputHelper();
 const logger = new Logger(puzzle);
 
-const directions: Direction[] = [
-    {x: 1, y: 0},
-    {x: 1, y: -1},
-    {x: 0, y: -1},
-    {x: -1, y: -1},
-    {x: -1, y: 0},
-    {x: -1, y: 1},
-    {x: 0, y: 1},
-    {x: 1, y: 1}
-]
+const directions = Direction.directionsWithDiagonals();
+
 const inputValues: number[][] = input.getInput().map(x=>x.split('').map(x=>parseInt(x)));
 const octopusses: Grid<number> = new Grid();
 octopusses.setGrid(inputValues);

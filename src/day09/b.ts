@@ -1,5 +1,6 @@
 import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
+import { Direction } from '../utils/grid';
 
 const puzzle = 'Day 09B: Smoke Basin'
 const input = new InputHelper();
@@ -7,12 +8,7 @@ const logger = new Logger(puzzle);
 
 logger.start();
 
-const directions = [
-    {x: 1, y: 0},
-    {x: -1, y: 0},
-    {x: 0, y: 1},
-    {x: 0, y: -1}
-]
+const directions = Direction.directionsWithoutDiagonals();
 
 const points: number[][] = input.getInput()
                                 .map(x=>x.split('')

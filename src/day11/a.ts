@@ -6,16 +6,7 @@ const puzzle = 'Day 11A: Dumbo Octopus'
 const input = new InputHelper();
 const logger = new Logger(puzzle);
 
-const directions: Direction[] = [
-    {x: 1, y: 0},
-    {x: 1, y: -1},
-    {x: 0, y: -1},
-    {x: -1, y: -1},
-    {x: -1, y: 0},
-    {x: -1, y: 1},
-    {x: 0, y: 1},
-    {x: 1, y: 1}
-]
+const directions = Direction.directionsWithDiagonals();
 const steps = 100;
 
 logger.start();

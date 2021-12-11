@@ -18,6 +18,27 @@ export class Line {
 export class Direction {
     x: number = 0;
     y: number = 0;
+
+    static directionsWithDiagonals(): Direction[] {
+        return [
+            {x: 1, y: 0},
+            {x: 1, y: -1},
+            {x: 0, y: -1},
+            {x: -1, y: -1},
+            {x: -1, y: 0},
+            {x: -1, y: 1},
+            {x: 0, y: 1},
+            {x: 1, y: 1}
+        ]        
+    }
+    static directionsWithoutDiagonals(): Direction[] {
+        return [
+            {x: 1, y: 0},
+            {x: 0, y: -1},
+            {x: -1, y: 0},
+            {x: 0, y: 1}
+        ]        
+    }
 }
 
 export class Grid<T> {
