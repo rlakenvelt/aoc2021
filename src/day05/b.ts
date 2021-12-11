@@ -27,7 +27,8 @@ const width = lines.reduce((w, p) => {
                         return w;
                     }, 0);
 
-const grid = new VentsGrid(height+1, width+1);
+const grid = new VentsGrid();
+grid.initGrid(height+1, width+1, 0);
 grid.markLines(lines);
 // grid.display();
 logger.end(grid.countOverlapping());

@@ -15,21 +15,46 @@ export class Line {
         this.to = to;
     }
 }
-
-export class NumberGrid {
-    points: number[][];
-
-    constructor (width: number, height: number) {
-        this.points = new Array(height).fill([]).map(row => new Array(width).fill(0));
-    }
-
+export class Direction {
+    x: number = 0;
+    y: number = 0;
 }
 
-export class StringGrid {
-    points: string[][];
+export class Grid<T> {
+    grid: T[][] = [][0];
+    width: number = 0;
+    height: number = 0;
 
-    constructor (width: number, height: number) {
-        this.points = new Array(height).fill([]).map(row => new Array(width).fill(''));
+    constructor(width?: number, height?: number, initial?: T) {
+        if (width && height && initial!==undefined) {
+            this.initGrid(width, height, initial);
+        }
     }
+    
+    initGrid (width: number, height: number, initial: T) {
+        this.grid = new Array(height).fill([]).map(row => new Array(width).fill(initial));
+        this.height = height;
+        this.width = width;
+    }
+
+    setGrid(grid: T[][]) {
+        this.grid = grid;
+        this.height = grid[0].length;
+        this.width  = grid.length;
+    }
+
+    display() {
+        this.grid.forEach(row => {
+            console.log(row.join(''));
+        })
+    }    
+
+    isOutsideGrid(x: number, y: number) {
+        if (x<0) return true;
+        if (x>this.width-1) return true;
+        if (y<0) return true;
+        if (y>this.height-1) return true;
+        return false;
+    }    
 
 }

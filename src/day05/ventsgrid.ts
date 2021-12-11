@@ -1,9 +1,9 @@
-import {NumberGrid, Line} from '../utils/grid';
+import {Line, Grid} from '../utils/grid';
 
-export class VentsGrid extends NumberGrid
+export class VentsGrid extends Grid<number>
 {
     countOverlapping() {
-        return this.points.reduce((total, row) => {
+        return this.grid.reduce((total, row) => {
             row.forEach(point=> {
                 if (point>1) total++;
             })
@@ -13,7 +13,7 @@ export class VentsGrid extends NumberGrid
 
     display() {
         const regex = /0/g;
-        this.points.forEach(row => {
+        this.grid.forEach(row => {
             console.log(row.join('').replace(regex, '.'));
         })
     }
@@ -24,7 +24,7 @@ export class VentsGrid extends NumberGrid
             let stepx = (line.from.x === line.to.x ? 0 : (line.from.x < line.to.x ? 1 : -1));
             let stop = false
             for (let y = line.from.y, x = line.from.x; !stop; y+=stepy, x+=stepx) {
-                this.points[y][x]++;
+                this.grid[y][x]++;
                 if (x===line.to.x && y===line.to.y) stop = true;
             };
         })    
