@@ -25,16 +25,14 @@ export class Grid<T> {
     width: number = 0;
     height: number = 0;
 
-    constructor(width?: number, height?: number, initial?: T) {
-        if (width && height && initial!==undefined) {
+    constructor(width: number = 0, height: number = 0, initial?: T) {
+        if (width > 0 && height > 0 && initial!==undefined) {
             this.initGrid(width, height, initial);
         }
     }
     
     initGrid (width: number, height: number, initial: T) {
-        this.grid = new Array(height).fill([]).map(row => new Array(width).fill(initial));
-        this.height = height;
-        this.width = width;
+        this.setGrid(new Array(height).fill([]).map(row => new Array(width).fill(initial)));
     }
 
     setGrid(grid: T[][]) {
