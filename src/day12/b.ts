@@ -42,7 +42,6 @@ inputValues.forEach((i: string)=> {
 const start = getCave('start');
 const end   = getCave('end');
 
-console.log(isValid('start,A,c,A,b,A,end'))
 scanPaths(start, 'start');
 
 logger.end(routes.length);
