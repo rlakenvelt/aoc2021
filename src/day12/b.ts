@@ -42,6 +42,7 @@ inputValues.forEach((i: string)=> {
 const start = getCave('start');
 const end   = getCave('end');
 
+console.log(isValid('start,A,c,A,b,A,end'))
 scanPaths(start, 'start');
 
 logger.end(routes.length);
@@ -64,17 +65,10 @@ function scanPaths(cave: Cave, path: string) {
 }
 
 function isValid(path: string): boolean {
-    const count:any = {};
-    let doubles=0;
-    path.split(',')
-        .forEach(i=>{ 
-        if ( i === i.toLowerCase()) 
-            count[i] = (count[i]||0) + 1;
-    });    
-    Object.keys(count).forEach(k=> {
-        if (count[k]>1) doubles+=count[k];
-    })
-    return doubles<3;
+    let pathList=path.split(',').filter(p=>p!=='start'&&p=== p.toLowerCase());
+    const countAll = pathList.length;
+    pathList=pathList.filter((p, index, self)=>{return self.indexOf(p) === index});
+    return countAll-pathList.length<2;
 }
 
 
