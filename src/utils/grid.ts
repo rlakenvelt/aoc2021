@@ -58,14 +58,15 @@ export class Grid<T> {
 
     setGrid(grid: T[][]) {
         this.grid = grid;
-        this.height = grid[0].length;
-        this.width  = grid.length;
+        this.height = grid.length;
+        this.width  = grid[0].length;
     }
 
     display() {
         this.grid.forEach(row => {
             console.log(row.join(''));
         })
+        console.log('');
     }    
 
     isOutsideGrid(x: number, y: number) {
