@@ -8,6 +8,7 @@ const logger = new Logger(puzzle);
 class Rule {
     pair:string='';
     insert:string='';
+    resultingPairs?:string[] =[];
 }
 class Pair {
     code:string='';
@@ -19,13 +20,20 @@ const inputValues = input.getInput('\n\n');
 const template: string[] = inputValues[0].split('');
 const rules: Rule[] = inputValues[1].split('\n').map(s=>{ 
     const parts = s.split(' -> ');
-    return {pair: parts[0], insert: parts[1]}
+    const pair = parts[0].split('');
+    const newrule: Rule = {pair: parts[0], insert: parts[1]};
+    newrule.resultingPairs = [pair[0] + parts[1], parts[1] + pair[1]];
+    return newrule;
 });
 let pairs: Pair[] = [];
 const counts: any = {};
 
 for (let i=0; i<template.length-1; i++) {
-    const pair = getPair(template[i]+template[i+1]);
+    let pair = pairs.find(p=>p.code===template[i]+template[i+1]);
+    if (!pair) {
+        pair={code: template[i]+template[i+1], count: 0};
+        pairs.push(pair);
+    }
     pair.count++;
 }
 template.forEach(c=> {
@@ -40,19 +48,14 @@ for (let step=0; step<steps; step++) {
     pairs.forEach(p=> {
         const rule = rules.find(r=>r.pair===p.code);
         if (rule) {
-            const parts=p.code.split('');
-            let pair = newPairs.find(p=>p.code===parts[0]+rule.insert);
-            if (!pair) {
-                pair={code: parts[0]+rule.insert, count: 0};
-                newPairs.push(pair);
-            }  
-            pair.count+=p.count;    
-            pair = newPairs.find(p=>p.code===rule.insert+parts[1]);
-            if (!pair) {
-                pair={code: rule.insert+parts[1], count: 0};
-                newPairs.push(pair);
-            }                        
-            pair.count+=p.count;    
+            rule?.resultingPairs?.forEach(r=> {
+                let pair = newPairs.find(p=>p.code===r);
+                if (!pair) {
+                    pair={code: r, count: 0};
+                    newPairs.push(pair);
+                }  
+                pair.count+=p.count;    
+            })                    
             if (!counts[rule.insert]) counts[rule.insert]=0;
             counts[rule.insert]+=p.count;            
         }
@@ -63,14 +66,4 @@ for (let step=0; step<steps; step++) {
 const temp:number[] = Object.keys(counts).map(c=>counts[c]).sort((a,b)=>a-b);
 answer=temp[temp.length-1]-temp[0];
 
-
 logger.end(answer);
-
-function getPair (code: string):Pair {
-    let pair = pairs.find(p=>p.code===code);
-    if (!pair) {
-        pair={code: code, count: 0};
-        pairs.push(pair);
-    }
-    return pair;
-}
