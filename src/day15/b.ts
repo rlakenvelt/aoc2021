@@ -20,22 +20,28 @@ class Cave {
 }
 
 logger.start();
-
+const multiplier = 5;
 const inputValues:number[][] = input.getInput().map(x=>x.split('').map(i=>parseInt(i)));
 const caveMap: Grid<Cave> = new Grid(inputValues[0].length, inputValues.length);
-const grid: Cave[][] = new Array(inputValues.length).fill([]).map(row => new Array(inputValues[0].length));
-for (let y = 0; y<inputValues.length; y++) {
-    for (let x = 0; x<inputValues[0].length; x++) {
-        const newCave = new Cave(x, y, inputValues[y][x]);
-        grid[y][x]=newCave;  
+const grid: Cave[][] = new Array(inputValues.length*multiplier).fill([]).map(row => new Array(inputValues[0].length*multiplier));
+const height = inputValues.length;
+const width = inputValues[0].length;
+for (let fy=0; fy<multiplier; fy++) {
+    for (let fx=0; fx<multiplier; fx++) {
+        for (let y = 0; y<height; y++) {
+            for (let x = 0; x<width; x++) {
+                let risk = inputValues[y][x]+fx+fy;
+                if (risk>9) risk=risk%9;
+                const newCave = new Cave(x+fx*width, y+fy*height, risk);
+                grid[newCave.y][newCave.x]=newCave;  
+            }
+        }
     }
 }
 caveMap.setGrid(grid);
+
 const directions = Direction.directionsWithoutDiagonals();
-
 const answer = dijkstra(caveMap.grid[0][0], caveMap.grid[caveMap.height-1][caveMap.width-1]);
-
-
 logger.end(answer);
 
 function dijkstra(start: Cave, finish: Cave) {
