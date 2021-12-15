@@ -76,5 +76,11 @@ export class Grid<T> {
         if (y>this.height-1) return true;
         return false;
     }    
-
+    isInsideGrid(x: number, y: number) {
+        if (x<0) return false;
+        if (x>this.width-1) return false;
+        if (y<0) return false;
+        if (y>this.height-1) return false;
+        return true;
+    }  
 }
