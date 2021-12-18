@@ -1,4 +1,3 @@
-import { SlowBuffer } from 'buffer';
 import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
 

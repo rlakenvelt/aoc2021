@@ -1,4 +1,3 @@
-import { SlowBuffer } from 'buffer';
 import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
 
@@ -16,8 +15,8 @@ for (let i = 1; i<inputValues.length; i++) {
         if (i!==j) {
             const sum = `[${inputValues[i]},${inputValues[j]}]`;
             snailfishNumber = reduceNumber(sum);
-            const magnitute = calculateMagnitute(snailfishNumber);
-            largest = Math.max(largest, magnitute);
+            const magnitude = calculateMagnitute(snailfishNumber);
+            largest = Math.max(largest, magnitude);
 
         }
     }
