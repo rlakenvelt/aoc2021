@@ -5,7 +5,7 @@ const puzzle = 'Day %puzzle%'
 const input = new InputHelper();
 const logger = new Logger(puzzle);
 
-const values = input.getNumericInput();
+const inputValues = input.getInput();
 
 logger.start();
 let answer = 0;
