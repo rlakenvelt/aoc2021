@@ -55,7 +55,7 @@ export class Grid<T> {
     initGrid (width: number, height: number, initial: T) {
         this.setGrid(new Array(height).fill([]).map(row => new Array(width).fill(initial)));
     }
-
+    
     setGrid(grid: T[][]) {
         this.grid = grid;
         this.height = grid.length;
@@ -89,13 +89,19 @@ export class Grid<T> {
         this.height = this.grid.length;
         this.width  = this.grid[0].length;             
     }
-    display() {
+    private highlight(t: string):string {
+        return `\x1b[1m\x1b[31m${t}\x1b[0m`;
+    }  
+    display(hightlight?: string) {
         this.grid.forEach(row => {
-            console.log(row.join(''));
+            let temp = row.join('');
+            if (hightlight) {
+                const regex = new RegExp(hightlight, 'g');
+                temp = temp.replace(regex, this.highlight(hightlight));
+            }
+            console.log(temp);
         })
-        console.log('');
-    }    
-
+    } 
     isOutsideGrid(x: number, y: number) {
         if (x<0) return true;
         if (x>this.width-1) return true;
