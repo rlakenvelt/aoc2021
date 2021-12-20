@@ -37,7 +37,7 @@ function createOutputImageFrom(inputImage: Grid<string>): Grid<string> {
         for (let x=1; x<outputImage.width-2; x++) {
             let bits='';
             for (let y1=-1; y1<2; y1++) {
-                bits=bits+inputImage.grid[y+y1].slice(x-1,x+2).join('');
+                bits+=inputImage.grid[y+y1].slice(x-1,x+2).join('');
             }
             bits = bits.replace(/\./g, '0');
             bits = bits.replace(/#/g, '1');
