@@ -48,7 +48,7 @@ function findMatch(scanner1: Scanner, scanner2: Scanner): boolean {
             return true;
         };
         tryRotation = scanner2.rotate()
-    } while (tryRotation.hasMoreRotationa)
+    } while (tryRotation.hasMoreRotations)
     return false;
 }
 

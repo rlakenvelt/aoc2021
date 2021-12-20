@@ -58,7 +58,7 @@ export class Scanner {
         this.beacons = []; 
     }
 
-    get hasMoreRotationa() {
+    get hasMoreRotations() {
         return (this.rotationIndex<24);
     }  
     reset() {
@@ -73,7 +73,7 @@ export class Scanner {
         })
     }
     rotate(): Scanner {
-        if (!this.hasMoreRotationa) return this;
+        if (!this.hasMoreRotations) return this;
         const newScanner = new Scanner(this.ID);
         newScanner.rotationIndex = this.rotationIndex;
         newScanner.setBeacons(this.beacons.map(b=>rotations[this.rotationIndex](b)));
