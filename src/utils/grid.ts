@@ -61,7 +61,32 @@ export class Grid<T> {
         this.height = grid.length;
         this.width  = grid[0].length;
     }
-
+    expand(margin: number, initial: T) {
+        for (let i=0; i<margin; i++) {
+            this.grid.unshift(new Array(this.width).fill(initial));
+            this.grid.push(new Array(this.width).fill(initial));
+        }
+        this.grid.forEach(l=> {
+            for (let i=0; i<margin; i++) {
+                l.unshift(initial);
+                l.push(initial);
+            }
+        })
+        this.height = this.grid.length;
+        this.width  = this.grid[0].length;
+    }
+    crop(margin: number) {
+        for (let i=0; i<margin; i++) {
+            this.grid.shift();
+            this.grid.pop();
+        }
+        this.grid.forEach(l=> {
+            for (let i=0; i<margin; i++) {
+                l.shift();
+                l.pop();
+            }
+        })        
+    }
     display() {
         this.grid.forEach(row => {
             console.log(row.join(''));
