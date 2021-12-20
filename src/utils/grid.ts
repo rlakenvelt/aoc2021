@@ -85,7 +85,9 @@ export class Grid<T> {
                 l.shift();
                 l.pop();
             }
-        })        
+        })   
+        this.height = this.grid.length;
+        this.width  = this.grid[0].length;             
     }
     display() {
         this.grid.forEach(row => {
