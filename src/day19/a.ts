@@ -1,6 +1,6 @@
 import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
-import { Beacon, Scanner} from './common';
+import { Vector, Scanner} from './common';
 const puzzle = 'Day 19A: Beacon Scanner'
 const input = new InputHelper();
 const logger = new Logger(puzzle);
@@ -24,7 +24,7 @@ do {
     }
 } while (scanners.length>0)
 
-let totalBeacons: Beacon[] = [];
+let totalBeacons: Vector[] = [];
 finalScanners.forEach(s=> {
     s.transform();
     s.beacons.forEach(b1=> {
@@ -44,12 +44,11 @@ function findMatch(scanner1: Scanner, scanner2: Scanner): boolean {
     let tryRotation = scanner2.rotate();
     do {
         if (scanner1.matches(tryRotation)) {
-            console.log('FOUND', tryRotation.ID);
             finalScanners.push(tryRotation);
             return true;
         };
         tryRotation = scanner2.rotate()
-    } while (!tryRotation.noMoreRotations)
+    } while (tryRotation.hasMoreRotationa)
     return false;
 }
 
@@ -63,7 +62,7 @@ function getScannersFromInput(): Scanner[] {
         .forEach((beacons, index) => {
         const newScanner = new Scanner(index);
         const coordinatelist = beacons.map(b=>b.split(','))
-                                      .map(b=>new Beacon(parseInt(b[0]), parseInt(b[1]), parseInt(b[2])));
+                                      .map(b=>new Vector(parseInt(b[0]), parseInt(b[1]), parseInt(b[2])));
         newScanner.setBeacons(coordinatelist);
         scanners.push(newScanner);
         });
