@@ -38,12 +38,7 @@ class DeterministicDie {
 logger.start();
 
 const die = new DeterministicDie(100);
-const inputValues = input.getInput();
-const players: Player[] = inputValues.map(l=> {
-    const parts = l.split(' ');
-    const newPlayer = new Player(parseInt(parts[1]), parseInt(parts[4]));
-    return newPlayer;
-})
+const players: Player[] = getPlayers();
 
 let currentPlayer = 0;
 let turns = 0;
@@ -58,4 +53,12 @@ while (true) {
 const loser = players[currentPlayer===1?0:1];
 
 logger.end(turns * loser.score);
+
+function getPlayers(): Player[] {
+    return input.getInput().map(l=> {
+        const parts = l.split(' ');
+        const newPlayer = new Player(parseInt(parts[1]), parseInt(parts[4]));
+        return newPlayer;
+    })
+}
 
