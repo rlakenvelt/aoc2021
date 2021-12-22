@@ -7,7 +7,7 @@ const logger = new Logger(puzzle);
 
 type Range = {from: number, to:number}
 
-type RebootStep = {
+type Cuboid = {
     on: number;
     range: {
         x: Range,
@@ -16,7 +16,7 @@ type RebootStep = {
     }
 }
 
-let rebootSteps: RebootStep[] = [];
+let cuboids: Cuboid[] = [];
 logger.start();
 
 const inputValues = input.getInput();
@@ -28,18 +28,18 @@ inputValues.forEach(line=> {
         const values = range.substring(2).split('..').map(x=>parseInt(x));
         ranges[axis]={from:values[0],to:values[1]};
     })
-    const rebootStep: RebootStep = {on: (parts[0]==='on'?1:0), range: ranges};
+    const cuboid: Cuboid = {on: (parts[0]==='on'?1:0), range: ranges};
 
-    rebootSteps.push(rebootStep)
+    cuboids.push(cuboid)
 })
 
-rebootSteps=rebootSteps.filter(filterSteps)
+cuboids=cuboids.filter(filterSteps)
 
 const cubes: any = {}
 
 let answer = 0;
 
-rebootSteps.forEach(step=> {
+cuboids.forEach(step=> {
     for (let z=step.range.z.from; z<=step.range.z.to; z++) {
         for (let y=step.range.y.from; y<=step.range.y.to; y++) {
             for (let x=step.range.x.from; x<=step.range.x.to; x++) {
@@ -58,7 +58,7 @@ function hash(x: number, y: number, z: number): string {
     return [x, y, z].join('_');
 }
 
-function filterSteps(step: RebootStep) {
+function filterSteps(step: Cuboid) {
     if (step.range.x.from>50) return false;
     if (step.range.x.to<=-50) return false;
     if (step.range.y.from>50) return false;
