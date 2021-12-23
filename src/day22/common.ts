@@ -62,17 +62,33 @@ export class Cuboid {
         return this.width * this.height * this.depth;
     }    
 
-    split(other: Cuboid): Cuboid[] {
+    remainingCuboids(other: Cuboid): Cuboid[] {
         const intersection = this.intersection(other);
-        return [];
+        const newCuboids: Cuboid[] = [];
+        if (intersection) {
+            const xRanges = this.composeRanges(this.lowPoint.x, this.highPoint.x, intersection.lowPoint.x, intersection.highPoint.x);
+            const yRanges = this.composeRanges(this.lowPoint.y, this.highPoint.y, intersection.lowPoint.y, intersection.highPoint.y);
+            const zRanges = this.composeRanges(this.lowPoint.z, this.highPoint.z, intersection.lowPoint.z, intersection.highPoint.z);
+            for (let xRange of xRanges) {
+                for (let yRange of yRanges) {
+                    for (let zRange of zRanges) {
+                        const newCuboid = new Cuboid(xRange[0], xRange[1], yRange[0], yRange[1], zRange[0], zRange[1], 1);
+                        if (!newCuboid.overlaps(intersection)) {
+                            newCuboids.push(newCuboid);
+                        }
+                    }        
+                }
+            }
+        }
+        return newCuboids;
     }
     overlaps(other: Cuboid): boolean {
-        return (this.highPoint.x > other.lowPoint.x &&
-                this.lowPoint.x < other.highPoint.x &&
-                this.highPoint.y > other.lowPoint.y &&
-                this.lowPoint.y < other.highPoint.y &&
-                this.highPoint.z > other.lowPoint.z &&
-                this.lowPoint.z < other.highPoint.z);
+        return (this.highPoint.x >= other.lowPoint.x &&
+                this.lowPoint.x <= other.highPoint.x &&
+                this.highPoint.y >= other.lowPoint.y &&
+                this.lowPoint.y <= other.highPoint.y &&
+                this.highPoint.z >= other.lowPoint.z &&
+                this.lowPoint.z <= other.highPoint.z);
     }
 
     intersection(other: Cuboid): Cuboid | undefined {
@@ -85,5 +101,12 @@ export class Cuboid {
         let maxZ: number = Math.min(this.highPoint.z, other.highPoint.z);
         return new Cuboid(minX, maxX, minY, maxY, minZ, maxZ, 0);
     }    
-  
+
+    composeRanges(c1: number, c2: number, i1: number, i2: number): any[]{
+        const ranges: any[] = [[i1, i2]];
+        if (c1<i1) ranges.push([c1, i1-1]);
+        if (c2>i2) ranges.push([i2+1, c2]);
+        return ranges;
+    }
+
 }

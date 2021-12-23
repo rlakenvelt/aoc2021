@@ -9,45 +9,25 @@ const logger = new Logger(puzzle);
 
 logger.start();
 
-let cuboids=Cuboid.cuboidsFromInput();
-let preprocessedCuboids: Cuboid[] = [];
+let baseCuboids=Cuboid.cuboidsFromInput();
+let cuboids: Cuboid[] = [];
 
+for (let baseCuboid of baseCuboids) {
+    const newCuboids: Cuboid[] = [];
+    for (let cuboid of cuboids) {
+        if (cuboid.overlaps(baseCuboid)) {
+            const splitCuboids = cuboid.remainingCuboids(baseCuboid);
+            newCuboids.push(...splitCuboids);
+        } else {
+            newCuboids.push(cuboid);
+        }
+    }  
+    if (baseCuboid.on) newCuboids.push(baseCuboid);
+    cuboids=newCuboids;
+}
+let answer = 0;
 for (let cuboid of cuboids) {
-    if (preprocessedCuboids.length===0) {
-        if (cuboid.on) preprocessedCuboids.push(cuboid);
-        continue;
-    }
-    const addCuboids: Cuboid[] = [];
-    if (cuboid.on) {
-        for (let other of preprocessedCuboids) {
-            const intersection = cuboid.intersection(other);
-            if (intersection&&other.on) {
-                intersection.on=-1;
-                addCuboids.push(intersection);
-            }
-        }  
-        preprocessedCuboids.push(cuboid);
-    } else {
-        for (let other of preprocessedCuboids) {
-            const intersection = cuboid.intersection(other);
-            if (intersection&&other.on) {
-                intersection.on=-1;
-                addCuboids.push(intersection);
-            }
-        }  
-    } 
-    preprocessedCuboids=[...preprocessedCuboids, ...addCuboids];
+    answer+=cuboid.volume;
 }
-let cubes = 0;
-for (let cuboid of preprocessedCuboids) {
-    console.log(cuboid.on, cuboid.volume)
-    cubes+=cuboid.volume*cuboid.on;
-}
-
-// const intersection = cuboids[0].intersection(cuboids[1]);
-
-// console.log(intersection, intersection?.volume)
-let answer = cubes;
-
 
 logger.end(answer);
