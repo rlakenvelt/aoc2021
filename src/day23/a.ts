@@ -1,7 +1,7 @@
 import InputHelper from '../utils/input';
 import Logger from '../utils/logger';
 
-const puzzle = 'Day 23A'
+const puzzle = 'Day 23A: Amphipod'
 const input = new InputHelper();
 const logger = new Logger(puzzle);
 const rooms: string[] = ['','','','A','','B','','C','','D','',''];
@@ -36,7 +36,7 @@ class Amphipod {
     locationOnMap(map: any): Point {
         let hash: string = '';
         Object.keys(map).forEach(key=> {
-            if (map[key].id===this.id) {
+            if (map[key]===this.id) {
                 hash=key;
             }
         })
@@ -47,7 +47,7 @@ class Amphipod {
         if (path.endpoint.y>1) {
             if (this.room!==path.endpoint.room) return -3; // To wrong room
             for (let y=path.endpoint.y+1; y<=maxY; y++) {
-                const id = map[Point.hash(path.endpoint.x, y)].id;
+                const id = map[Point.hash(path.endpoint.x, y)];
                 if (id<0) return -5; // Room not completely filled
                 if (amphipods[id].room!==this.room) return -6; // Wrong amphipod in room
             }
@@ -55,7 +55,7 @@ class Amphipod {
         if (this.room===location.room) {
             let allInPlace = true;
             for (let y=location.y+1; y<=maxY; y++) {
-                const id = map[Point.hash(location.x, y)].id;
+                const id = map[Point.hash(location.x, y)];
                 if (id<0||amphipods[id].room!==this.room) {
                     allInPlace=false;
                 }
@@ -63,7 +63,7 @@ class Amphipod {
             if (allInPlace) return -7; // Already in place
 
         }
-        if (!path.path.every(p=> map[p].id<0)) {
+        if (!path.path.every(p=> map[p]<0)) {
             return -8; // Amphipod on path
         }
 
@@ -133,50 +133,37 @@ function move(map: any, level: number): number {
     let possibleMoves: any[] = [];
     let energy = Infinity;
     let endpoints = false;
-    amphipods.forEach(amphipod=> {
+    let done = true;
+
+    for (let amphipod of amphipods) {
         const location: Point = amphipod.locationOnMap(map);
+        if (location.room!==amphipod.room) done = false
 
         location.paths.forEach(path=> {
             const costs = amphipod.endpointCostsUsingMap(location, path, map);
             if (costs > 0) {
                 const isEndpoint = isAtEndpoint(path.endpoint, map);
                 if (isEndpoint) endpoints = true;
-                possibleMoves.push({id: amphipod.id, point: path.endpoint, energy: costs, end: isEndpoint})
+                possibleMoves.push({id: amphipod.id, from: location, point: path.endpoint, energy: costs, end: isEndpoint})
             }
         })
-    })
+    }
     if (endpoints) {
         possibleMoves = possibleMoves.filter(move=>move.end=== true)
     }
 
     if (possibleMoves.length===0) {
-        let done = true
-        for (let amphipod of amphipods) {
-            const location: Point = amphipod.locationOnMap(map);
-            if (location.room!==amphipod.room) done = false
-        }
-      
         return (done?0:Infinity);
     }
 
     for (let m of possibleMoves) {
-
         const newMap = {...map};
-        Object.keys(newMap).forEach(key=> {
-            if (newMap[key].id===m.id) {
-                newMap[key]={id:-1,room:''};
-            }              
-        })
-
-        newMap[m.point.hash] = {id:m.id,room:amphipods[m.id].room};
+        newMap[m.from.hash]=-1;
+        newMap[m.point.hash] = m.id;
 
         const e = move(newMap, level+1);
         if (e!==Infinity)
             energy = Math.min(energy, m.energy + e);
-
-    }
-    if (level<=1) {
-        console.log(level, energy);
 
     }
     return energy;
@@ -185,7 +172,7 @@ function move(map: any, level: number): number {
 function isAtEndpoint(point: Point, map: any) {
     if (point.y===1) return false;
     for (let y=point.y+1; y<=maxY; y++) {
-        if (map[point.hash].id<0) return false;
+        if (map[point.hash]<0) return false;
     }  
     return true;  
 }
@@ -198,7 +185,7 @@ function init () {
             const point = new Point(x,y);
             switch (inputValues[y][x]) {
                 case '.':
-                    burrowMap[point.hash] = {id: -1, room: ''};
+                    burrowMap[point.hash] = -1;
                     points.push(point);
                     break;
                 case 'A':
@@ -206,7 +193,7 @@ function init () {
                 case 'C':
                 case 'D':
                     const newAmphipod = new Amphipod(id, inputValues[y][x]);
-                    burrowMap[point.hash] = {id: id, room: newAmphipod.room};
+                    burrowMap[point.hash] = id;
                     amphipods.push(newAmphipod);
                     points.push(point);
                     id++;
