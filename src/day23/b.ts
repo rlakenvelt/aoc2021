@@ -170,10 +170,6 @@ function move(map: any, level: number): number {
             energy = Math.min(energy, m.energy + e);
 
     }
-    if (level<=1) {
-        console.log(level, energy);
-
-    }
     return energy;
 }
 
